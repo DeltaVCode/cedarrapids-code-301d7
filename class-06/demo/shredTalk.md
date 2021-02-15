@@ -1,3 +1,6 @@
+```js
+
+
 //Object iteration 
 
 const cohort ={
@@ -60,3 +63,4 @@ Object.entries(cohort).forEach(minArr => {
 //in lab you will be asked to use these methods to get the job done today. 
 
 
+```
