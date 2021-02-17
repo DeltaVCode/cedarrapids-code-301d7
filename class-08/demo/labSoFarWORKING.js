@@ -1,38 +1,26 @@
 'use strict';
-
 // Load Environment Variables from the .env file
 require('dotenv').config();
-
 // Application Dependencies Loaded Packages
 const express = require('express');
 const cors = require('cors');
-const pg = require('pg');
+// const pg = require('pg');
 const superagent = require('superagent');
-
-
-
 // Application Setup
 const PORT = process.env.PORT || 3111;
 const app = express();
-
-
-
-
-
+app.use(cors());
 // we can plan what we expect ahead of time.
-
 // Locations
 // URL = GET https://us1.locationiq.com/v1/search.php?key=YOUR_ACCESS_TOKEN&q=SEARCH_STRING&format=json
 //In location what does req.query have? ceity  = seattle q = key   city="seattle"
 // query: String [q, key, format=json]
-
 // {
 //   "search_query": "seattle",
 //   "formatted_query": "Seattle, WA, USA",
 //   "latitude": "47.606210",
 //   "longitude": "-122.332071"
 // }
-
 // Weather
 // url = http://api.weatherbit.io/v2.0/forecast/daily
 // query: string  lon lat days keys
@@ -48,10 +36,6 @@ const app = express();
 //     "time": "Tue Jan 02 2001"
 //   }
 // ]
-
-
-
-
 //Parks => [{},{},{}] has location, 'search_query', formatted_query, latitude, longitude
 /** [
     {
@@ -69,129 +53,53 @@ const app = express();
      "url": "https://www.nps.gov/mora/index.htm"
     }
 ] */
-
-
-
-
-
 //We are going to separate our routes from our callbacks.
 //Routes////////////////////////////////////////////////////////////////////////////////////////////////
 app.get('/', homePage);
 app.get('/location', gpsLocationHandler);
 app.get('/weather', getWeather);
 app.get('/parks', getParks);
-
-
-
 function homePage(request, response){
   response.send('<h1>Welcome to the server Home Page!</h1>');
 }
 
-
 function gpsLocationHandler(request, response){
-
-  // URL = GET https://us1.locationiq.com/v1/search.php?key=YOUR_ACCESS_TOKEN&q=SEARCH_STRING&format=json
-  //In location what does req.query have? ceity  = seattle q = key   city="seattle"
-  // query: String [q, key, format=json]
   const key = process.env.GEOCODE_API_KEY;
   const city = request.query.city;
   const url = `https://us1.locationiq.com/v1/search.php?key=${key}&q=${city}&format=json`;
-
   superagent.get(url)
     .then(result => {
       console.log('this is the result body ', result.body[0]);
-      response.send();
+      //finish output from super agent to the page
+      let locationObject = new Location(city, result.body[0]);
+      console.log('lolo obj',locationObject);
+      response.status(200).send(locationObject);
     }).catch(error => {
       console.log(error);
     });
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 function getWeather(request, response){
-
-  // url = http://api.weatherbit.io/v2.0/forecast/daily
-
-  //query: string lat, lon, days, keys
-  //when client makes request sending info over http
-  //the data is stored here at req.query data from the from end. request.
-  //this is a deterministic server call.
-  //our pre built front end in app.js is how we get it back in the server
-  console.log(request.query);
-
-
-  const key = process.env.WEATHER_API_KEY;
-  const longitude = request.query.lon;
-  const latitude = request.query.lat;
-  const url = `http://api.weatherbit.io/v2.0/forecast/daily?key=${key}&days=8&lon=${longitude}&lat=${latitude}`;
-
-  superagent.get(url)
-    .then(result => {
-      console.log('this is the result body ', result.body[0]);
-      const arr = result.body.data.map(object => new Weather(object));
-      response.send(arr);
-    }).catch(error => {
-      console.log(error);
+  const url = `http://api.weatherbit.io/v2.0/forecast/daily`;
+  let city  = request.query.search_query;
+  const queryParams = {
+    key: process.env.WEATHER_API_KEY,
+    lang: 'en',
+    city: city,
+    days: 5,
+  };
+  return superagent.get(url)
+    .query(queryParams)
+    .then(responseFromSuperAgent => {
+      console.log('this is the result body ', responseFromSuperAgent.body.data);
+      const weatherArray = responseFromSuperAgent.body.data.map(daysWeather => new Weather(daysWeather));
+      response.status(200).send(weatherArray);
+    })
+    .catch(error => {
+      console.log(error, 'This is the error Message.');
     });
-
-
-  // response.send([
-  //   {
-  //     'forecast': 'Partly cloudy until afternoon.',
-  //     'time': 'Mon Jan 01 2001'
-  //   },
-  //   {
-  //     'forecast': 'Mostly cloudy in the morning.',
-  //     'time': 'Tue Jan 02 2001'
-  //   }
-  // ]);
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 function getParks(request, response){
@@ -227,10 +135,18 @@ function getParks(request, response){
 
 //Helper functions////////////////////////////////////////////////////////////////////////////
 function Weather(weatherObject){
-  this.forcast = weatherObject.weather.desciption;
+  console.log('WWOO', weatherObject.weather.description);
+  this.forecast = weatherObject.weather.description;
   this.time = weatherObject.valid_date;
 }
 
+
+function Location(searchQuery, object){
+  this.search_query = searchQuery;
+  this.formatted_query = object.display_name;
+  this.latitude = object.lat;
+  this.longitude = object.lon;
+}
 
 // ==== Start the server ====
 app.listen(PORT, () => console.log(`Server is running on PORT: ${PORT}`));
