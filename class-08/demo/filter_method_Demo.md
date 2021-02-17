@@ -1,33 +1,45 @@
-# Persistence with a SQL database
+```js
 
-## Overview
+//array.prototype.filter shares the call back of map and forEach 
+//it takes in value, index, and array
+//if the call back returns true, it keeps the thing in the array
+//if it returns false it skips it
+//it makes a new array with these rules
 
-Today we are going to be adding a persistence layer in the form of a SQL database. Relevant data from the Geocoding API will be stored in a table using postgres.
+const names = ['Lister','Holly','SmegHead','Kyrton','Rimmer', 'Toasty','Cat'];
 
-## Daily Plan
+names.filter((value, index, arr) => {
+  return true;
+});
 
-- Warm-up exercise
-- Review code challenges
-- Introduction of today's code challenge topic
-- Code review of lab assignment
-- Relational vs. non-relational databases
-- Data modeling and schemas
-- Primary keys and foreign keys
-- Code Demo
-- Lab Preview
+names.filter((value, index, arr) => {
+  return false;
+});
 
-## Learning Objectives
+names.filter((value, index, arr) => {
+  if(index % 2){
+    return true;
+  } else {
+    return false;
+  }
+});
 
-As a result of completing Lecture 8 of Code 301, students will be able to:
+names.filter((value, index, arr) => {
+  if(value.length < 6){
+    return true;
+  } else {
+    return false;
+  }
+});
 
-* Describe and Define  
-  * Relational Databases
-  * Tables, Columns, Rows, Records
-  * SQL Language
-  * How CRUD relates to SQL
-  * `pg` client library for Node
-    * Parameterized Queries
-* Execute
-  * Connect a node server to a Postgres DB
-  * Save (INSERT) records to the database to create/sync a cache
-  * Read (SELECT) records from the database to populate a cache
+names.filter((value, index, arr) => {
+  if(value.match(/a/)){
+    return true;
+  } else {
+    return false;
+  }
+});
+
+//return true or return false, and filter will build out the array. 
+
+```
