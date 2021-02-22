@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+  </head>
+  <body>
+   
+<!-- out put the grocery list -->
+<h1>List</h1>
+
+<!-- we need ejs open and close scriptlets to start and stop the js and allow for us to enter some <html></html> -->
+     <% for(let i = 0; i < iAmtheListKey.length; i++){    %>
+            <li> <%= iAmtheListKey[i].product %>     X-   <%= iAmtheListKey[i].quantity%></li>
+    <% } %>
+
+
+<!-- This will out put the goonies  -->
+<ul>
+  <% for(let i = 0; i < namesArrayKey.length; i++){ %>
+
+      <li> <%= namesArrayKey[i] %> </li>
+
+  <% } %>
+</ul>
+
+
+<% console.log( 'from ejs', namesArrayKey); %>
+
+
+<%    namesArrayKey.forEach(name => {%>
+        <li>Name: <%= name %></li>
+ <%  }); %>
+
+
+
+
+  </body>
+</html>
