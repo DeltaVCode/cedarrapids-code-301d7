@@ -1,0 +1,71 @@
+/* start with mobile first */
+
+/* div, header, footer{
+  width: 100%;
+  height: 200px; 
+  border: 1px solid black;
+  background-color: lightcoral;
+  color: red;
+  text-align: center;
+  line-height: 200px;
+} */
+
+
+
+section {
+  display: flex;
+  /* it is like line block or we can use flex centers by default takes control from top down  */
+
+  flex-wrap: wrap;
+
+  /* do last */
+  /* flex-wrap: wrap-reverse; */
+
+  /* As long as we have space they will wrap */
+
+  /* width: 800px; */
+  /* Setting this would give us the four by four.  */
+
+  /* justify-content: center; */
+  justify-content: space-around;
+  /* justify-content: space-between; */
+
+  /* look at anchor tag and talk about the node element. */
+  /* center and align  boxes like text */
+  /* space evenly sets the in between and leftmost and rightmost edge to be equal */
+  /* space around sets an even margin on the left and right of EACH element left and right are one unit of space, the middle each get 2 units of space */
+
+  align-items: center;
+  /* align-items: baseline; */
+  /* align-items: stretch; */
+  /* align-items: flex-end; */
+
+
+  /* may shift where ever the text is even it is dynamic*/
+
+/* flex box calculates vertical space for us, if we were measuring our text and setting line height would be another way, but there is more calculations that you have to do.  */
+
+  flex-direction: row;
+  /* flex-direction: column-reverse;
+  flex-direction: row-reverse;
+  flex-direction: column; */
+
+  /* height: 800px;     */
+
+
+
+}
+div {
+  height : 200px;
+  width :200px;
+  /* width: 100%; */
+}
+
+ div:nth-child(4n){
+  height: 400px;
+} 
+
+
+
+
+/* https://caniuse.com/?search=flex */

@@ -1,0 +1,13 @@
+img {
+  width: 250px;
+}
+
+
+li {
+  float: left;
+}
+
+li:first-child {
+display: none;
+
+}

@@ -1,0 +1,31 @@
+div{
+  background-color: rgba(136, 83, 185, 0.822);
+  border: solid 1px purple;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  width: 50px;
+}
+
+
+/* it is common to use flex in grid as well to handle different parts of the page.  */
+
+body{
+  display: grid;
+  /* grid-template-columns: 100px 100px 300px 400px;
+  grid-template-rows: 200px 500px 100px 200px; */
+  /* we can combine fr and pixels as well */
+  grid-template-columns: repeat(4, 1fr 3fr);
+  grid-template-rows: 1fr 300px 1fr 1fr;
+  height: 98vh;
+  justify-content: center;
+  align-items: center;
+}
+
+section {
+
+  grid-template-columns: 1fr   1fr;
+  grid-template-rows: 1fr 1fr;
+}
